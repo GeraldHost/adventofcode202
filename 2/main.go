@@ -8,8 +8,8 @@ import (
   "strconv"
 )
 
-func readInput(n string) string {
-  data, err := ioutil.ReadFile(fmt.Sprintf("%s.txt", n))
+func readInput() string {
+  data, err := ioutil.ReadFile("input.txt")
   if err != nil {
     log.Fatal("failed to read file")
   }
@@ -37,7 +37,7 @@ func isValidAlt(pwd, letter string, pos1, pos2 int) bool {
 
 func main() {
   valid := 0
-  data := readInput("2")
+  data := readInput()
   for _, line := range strings.Split(data, "\n") {
     parts := strings.Split(line, " ")
     if len(parts) == 3 {

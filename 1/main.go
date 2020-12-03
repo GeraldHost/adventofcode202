@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-  body, err := ioutil.ReadFile("1.txt")
+  body, err := ioutil.ReadFile("input.txt")
   if err != nil {
     log.Fatal("failed to read file")
   }

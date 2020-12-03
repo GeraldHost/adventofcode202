@@ -7,8 +7,8 @@ import (
   "strings"
 )
 
-func readInput(n string) string {
-  data, err := ioutil.ReadFile(fmt.Sprintf("%s.txt", n))
+func readInput() string {
+  data, err := ioutil.ReadFile("input.txt")
   if err != nil {
     log.Fatal("failed to read file")
   }
@@ -34,7 +34,7 @@ func Count(hsize, lsize int, lines []string) int {
 }
 
 func main() {
-  data := readInput("3")
+  data := readInput()
   lines := strings.Split(data, "\n")
 
   c1 := Count(1, 1, lines)
