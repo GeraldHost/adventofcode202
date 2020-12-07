@@ -8,7 +8,7 @@ import (
 )
 
 func readInput() string {
-  data, err := ioutil.ReadFile("input.txt")
+  data, err := ioutil.ReadFile("test.txt")
   if err != nil {
     log.Fatal("failed to read file")
   }
@@ -39,6 +39,7 @@ func Count(group string) int {
 func main() {
   data := readInput()
   groups := strings.Split(data, "\n\n")
+  fmt.Println(groups)
   total := 0
   for _, group := range groups {
     count := Count(group)
