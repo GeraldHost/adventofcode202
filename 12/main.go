@@ -54,7 +54,7 @@ func main() {
   // W -1  0
   // N  0  1
   // S  0 -1
-  dx, dy := 1, 0
+  dx, dy := 10, 1
   x, y := 0, 0
   
   for _, l := range lines {
@@ -64,9 +64,12 @@ func main() {
     if turning(action) {
       dx, dy = pdx, pdy
       continue
-    } else {
+    } else if action == "F" {
       x = x + (n * pdx)
       y = y + (n * pdy)
+    } else {
+      dx += (pdx * n)
+      dy += (pdy * n)
     }
   }
 
