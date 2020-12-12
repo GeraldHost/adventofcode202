@@ -10,7 +10,7 @@ import (
 )
 
 func readInput() string {
-  data, err := ioutil.ReadFile("test.txt")
+  data, err := ioutil.ReadFile("input.txt")
   if err != nil {
     log.Fatal("failed to read file")
   }
@@ -49,70 +49,30 @@ func countAdj(m [][]string, x, y int) int {
 
 func countInView(m [][]string, x, y int) int {
   count := 0
-  directions := []int{1,-1}
-
-  // diagonals
-  x1 := x
-  y1 := y
-  for _, d := range directions {
-    for x1 < len(m[x]) && x1 >= 0 && y1 < len(m) && y1 >= 0 {
-      if x1 == x && y1 == y {
-        x1+=d
-        y1+=d
-        continue
-      }
-      if m[y1][x1] != "." {
-        if m[y1][x1] == "#" {
-          count++ 
-        }
-        break
-      }
-      x1+=d
-      y1+=d
-    }
+  pos := [][]int{
+    {-1,-1},
+    {-1,0},
+    {-1,1},
+    {0,-1},
+    {0,1},
+    {1,-1},
+    {1,0},
+    {1,1},
   }
 
-  fmt.Println("Count", count)
-
-  // X
-  x2 := x
-  y2 := y
-  for _, dx := range directions {
-    for x2 < len(m) && x2 >= 0 {
-      if x2 == x {
-        x2+=dx
-        continue
-      }
-      if m[y2][x2] != "." {
-        if m[y2][x2] == "#" {
-          count++
-        }
+  for _, p := range pos {
+    y2, x2 := y+p[0], x+p[1]
+    for 0<=y2 && y2<len(m) && 0<=x2 && x2<len(m[0]) {
+      if m[y2][x2]=="#" {
+        count++
+        break
+      } else if m[y2][x2] == "L" {
         break
       }
-      x2+=dx
+      y2+=p[0]
+      x2+=p[1]
     }
   }
-  fmt.Println("Count", count)
-
-  // Y
-  x3 := x
-  y3 := y
-  for _, dy := range directions {
-    for y3 < len(m[y]) && y3 >= 0 {
-      if y3 == y {
-        y3+=dy
-        continue
-      }
-      if m[y3][x3] != "." {
-        if m[y3][x3] == "#" {
-          count++
-        }
-        break
-      }
-      y3+=dy
-    }
-  }
-  fmt.Println("Count", count)
 
   return count
 }
@@ -137,11 +97,10 @@ func pass(m [][]string) ([][]string, bool) {
     for j, pos := range seats {
       //ca := countAdj(m, j, i)
       ca := countInView(m, j, i)
-      fmt.Println(ca)
       if ca >= 5 && pos == "#" {
         change = true
         mtx[i][j] = "L"
-      } else if ca <= 0 && pos == "L" {
+      } else if ca == 0 && pos == "L" {
         change = true
         mtx[i][j] = "#"
       } else {
@@ -166,20 +125,20 @@ func main() {
     }
   }
   
-  ans, _  := pass(m)
-  //ans, _ = pass(ans)
+  // ans, _ := pass(m)
+  // ans, _ = pass(ans)
+  // debug(ans)
+
+  ans, change := pass(m)
+  if change { 
+    for {
+      ans, change = pass(ans)
+      if !change {
+        break;
+      }
+    }
+  }
   debug(ans)
-  n := countInView(ans, 0, 3)
+  n := countTotalOcc(ans)
   fmt.Println(n)
-  //if change { 
-  //  for {
-  //    ans, change = pass(ans)
-  //    if !change {
-  //      break;
-  //    }
-  //  }
-  //}
-  //debug(ans)
-  //n := countTotalOcc(ans)
-  //fmt.Println(n)
 }
